@@ -1,26 +1,33 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { ThemeContext, getThemeFromId, defaultTheme } from './utils/themeUtil';
+import GIFted from './GIFted';
 
 class App extends Component {
+  state = {
+    theme: defaultTheme
+  };
+
+  componentDidMount() {
+    this.setBodyByTheme();
+  }
+
+  componentDidUpdate() {
+    this.setBodyByTheme();
+  }
+
+  setBodyByTheme() {
+    const { theme } = this.state;
+    const finalTheme = getThemeFromId(theme);
+    const body = document.getElementsByTagName('body');
+    body[0].style.backgroundColor = finalTheme.primary;
+  }
+
   render() {
+    const { theme } = this.state;
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+      <ThemeContext.Provider value={getThemeFromId(theme)}>
+        <GIFted />
+      </ThemeContext.Provider>
     );
   }
 }
