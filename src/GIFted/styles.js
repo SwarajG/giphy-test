@@ -1,29 +1,32 @@
 import { css } from 'emotion';
 
 const mainWrapper = css`
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  width: 1040px;
-  align-items: center;
-  margin: 0 auto;
+  max-width: 900px;
+  margin: 50px auto;
+  position: relative;
 `;
 
 const inputWrapper = css`
   width: 100%;
   margin-bottom: 20px;
+  display: flex;
+  background-image: linear-gradient(45deg, rgb(153, 51, 255) 0%, rgb(255, 102, 102) 50%, rgb(153, 51, 255) 100%);
+  position: sticky;
+  top: 0px;
+  z-index: 10;
 `;
 
-const loader = css`
-  color: #FFF;
-  font-size: 24px;
-  text-align: center;
-  margin-top: 20px;
-  margin-bottom: 40px;
+const searchIcon = css`
+  transform: scaleX(-1);
+  width: 50px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 export default {
   mainWrapper,
   inputWrapper,
-  loader
+  searchIcon
 };

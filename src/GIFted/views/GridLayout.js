@@ -1,87 +1,112 @@
-import React, { Component } from 'react';
-import {
-  CellMeasurer,
-  CellMeasurerCache,
-  createMasonryCellPositioner,
-  Masonry
-} from 'react-virtualized';
-import ImageMeasurer from 'react-virtualized-image-measurer';
-import GifCard from './GifCard';
+import React, { Component } from "react";
+import { GridLayout as Grid } from "@egjs/react-infinitegrid";
+import { searchWithQuery } from '../../utils/requestUtils';
+import { defaultLimit, defaultOffset } from '../../utils/const';
+import GifCard from '../views/GifCard';
+import Icon from '../../HelperComponent/icons';
+import s from './styles';
+// import noResultFoundImage from '../../assets/not-results-found.gif';
+import './styles.css';
 
-const columnWidth = 200;
-const defaultHeight = 250;
-const defaultWidth = columnWidth;
-
-const cache = new CellMeasurerCache({
-  defaultHeight,
-  defaultWidth,
-  fixedWidth: true
-});
-
-const cellPositionerConfig = {
-  cellMeasurerCache: cache,
-  columnCount: 5,
-  columnWidth,
-  spacer: 10
-};
-
-const cellPositioner = createMasonryCellPositioner(cellPositionerConfig);
+const Item = ({ gif, index, isPlaying }) => (
+  <div className="item">
+    <div className="thumbnail">
+      <GifCard gif={gif} index={index} isPlaying={isPlaying} />
+    </div>
+  </div>
+);
 
 export default class GridLayout extends Component {
   constructor(props) {
     super(props);
-    this.noCacheList = props.gifs.map(item => ({
-      ...item,
-      images: {
-        ...item.images,
-        fixed_width: {
-          ...item.images.fixed_width,
-          mp4: item.images.fixed_width.mp4 + "?noCache=" + Math.random()
-        }
-      }
-    }));
+    this.state = {
+      gifsElements: [],
+      limit: defaultLimit,
+      offset: defaultOffset,
+      query: props.query,
+      hasMore: true
+    }
   }
 
-  cellRenderer = ({ index, key, parent, style }) => {
-    const gif = this.props.gifs[index];
-    const { height: imageHeight, width } = gif.images.fixed_width;
-    const height = columnWidth * (imageHeight / width) || defaultHeight;
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   if (nextProps.query !== this.props.query || nextState.gifsElements.length !== this.state.gifsElements.length) {
+  //     return true;
+  //   }
+  //   return false;
+  // }
+
+  loadItems = async () => {
+    const items = [];
+    const { offset, limit, query } = this.state;
+    try {
+      const response = await searchWithQuery(query, offset, limit);
+      for (let i = 0; i < response.data.length; i++) {
+        const currentElement = response.data[i];
+        items.push(
+          <Item
+            gif={currentElement}
+            index={i}
+            key={`${currentElement.id}_${i}`}
+            isPlaying={this.props.isPlaying}
+          />
+        );
+      }
+      return items;
+    } catch (error) {
+      alert('Something went wrong with the giphy api. Please try again later...');
+      return items;
+    }
+  }
+
+  onAppend = async (e) => {
+    e.startLoading();
+    const { offset, limit } = this.state;
+    const gifsElements = this.state.gifsElements;
+    const items = await this.loadItems();
+    if (items.length > 0) {
+      this.setState({ gifsElements: gifsElements.concat(items), offset: offset + 1 + limit });
+    }
+  };
+
+  onLayoutComplete = (e) => {
+    !e.isLayout && e.endLoading();
+    if (!this.props.isPlaying) {
+      const videos = document.getElementsByClassName('gif-video');
+      for(var i = 0; i < videos.length; i++) {
+        videos[i].pause();
+      }
+    }
+  }
+
+  renderLoader() {
     return (
-      <CellMeasurer
-        cache={cache}
-        key={key}
-        index={index}
-        parent={parent}
-      >
-        <div style={style}>
-          <GifCard gif={gif} height={height} index={index} />
-        </div>
-      </CellMeasurer>
+      <div className={s.loader}>
+        <Icon type="loader" width={36} height={36} fill="#FFF" />
+      </div>
     )
   }
 
   render() {
-    const { gifs } = this.props;
+    const { gifsElements, query } = this.state;
+    // if (gifsElements.length === 0 && query !== '') {
+    //   return (
+    //     <div className={s.noResults(noResultFoundImage)} />
+    //   );
+    // }
     return (
-      <ImageMeasurer
-        items={gifs}
-        image={item => item.images.fixed_width.mp4}
-        defaultHeight={defaultHeight}
-        defaultWidth={defaultWidth}
-      >
-        {({ itemsWithSizes }) => {
-          return (
-            <Masonry
-              cellCount={itemsWithSizes.length}
-              cellMeasurerCache={cache}
-              cellPositioner={cellPositioner}
-              cellRenderer={this.cellRenderer}
-              height={600}
-              width={1040}
-            />
-          )
-        }}
-      </ImageMeasurer>
+      <div className={s.gridWrapper}>
+        <Grid
+          margin={20}
+          align="center"
+          onAppend={this.onAppend}
+          onLayoutComplete={this.onLayoutComplete}
+          transitionDuration={0.2}
+          isConstantSize={true}
+          loading={this.renderLoader()}
+        >
+          {gifsElements}
+        </Grid>
+      </div>
     );
   }
 }

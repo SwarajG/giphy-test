@@ -1,0 +1,8 @@
+.item {
+  opacity: 1;
+}
+.item .thumbnail {
+  max-height: 300px;
+  overflow: hidden;
+  border-radius: 8px;
+}
