@@ -3,6 +3,8 @@ import SearchInput from './views/SearchInput';
 import GridLayout from './views/GridLayout';
 import GifController from './views/GifController';
 import Icon from '../HelperComponent/icons';
+import Tabs from './views/Tabs';
+import { tabs } from '../utils/const';
 import s from './styles';
 
 export default class GIFted extends Component {
@@ -11,13 +13,15 @@ export default class GIFted extends Component {
     this.state = {
       inputText: '',
       searchQuery: '',
-      isPlaying: true
+      isPlaying: true,
+      tab: tabs.GIFS
     };
     // bind will attach the function to the prototype, so instance size will be less for the class
     this.onQueryChange = this.onQueryChange.bind(this);
     this.onEnterPressed = this.onEnterPressed.bind(this);
     this.onSearch = this.onSearch.bind(this);
     this.onStatusChange = this.onStatusChange.bind(this);
+    this.onTabChange = this.onTabChange.bind(this);
   }
 
   onQueryChange(text) {
@@ -38,8 +42,12 @@ export default class GIFted extends Component {
     this.setState({ isPlaying });
   }
 
+  onTabChange(value) {
+    this.setState({ tab: value });
+  }
+
   render() {
-    const { searchQuery, isPlaying } = this.state;
+    const { searchQuery, isPlaying, tab } = this.state;
     return (
       <div className={s.mainWrapper}>
         <div className={s.inputWrapper}>
@@ -51,7 +59,10 @@ export default class GIFted extends Component {
             <Icon type="search" width={26} height={26} fill="#FFF" />
           </div>
         </div>
-        <GifController onStatusChange={this.onStatusChange} isPlaying={isPlaying} />
+        <div className={s.navWrapper}>
+          <Tabs onTabChange={this.onTabChange} tab={tab} />
+          <GifController onStatusChange={this.onStatusChange} isPlaying={isPlaying} />
+        </div>
         <GridLayout query={searchQuery} key={searchQuery} isPlaying={isPlaying} />
       </div>
     );

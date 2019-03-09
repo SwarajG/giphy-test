@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { ThemeContext } from '../../utils/themeUtil';
 import s from './styles';
 
 export default class SearchInput extends Component {
@@ -21,8 +22,11 @@ export default class SearchInput extends Component {
   }
 
   render() {
+    const theme = this.context;
     return (
-      <input className={s.inputClass} onKeyDown={this.onKeyDown} onChange={this.onChange} type="text" placeholder="Search gif here..." />
+      <input className={s.inputClass(theme)} onKeyDown={this.onKeyDown} onChange={this.onChange} type="text" placeholder="Search gif here..." />
     );
   }
 }
+
+SearchInput.contextType = ThemeContext;

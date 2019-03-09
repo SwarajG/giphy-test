@@ -1,18 +1,27 @@
 import React, { Component } from 'react';
 import { ThemeContext, getThemeFromId, defaultTheme } from './utils/themeUtil';
+import ThemeSelector from './HelperComponent/themeSelector';
 import GIFted from './GIFted';
 
 class App extends Component {
-  state = {
-    theme: defaultTheme
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      theme: defaultTheme
+    };
+    this.onChange = this.onChange.bind(this);
+  }
 
-  componentDidMount() {
+  async componentDidMount() {
     this.setBodyByTheme();
   }
 
   componentDidUpdate() {
     this.setBodyByTheme();
+  }
+
+  onChange(theme) {
+    this.setState({ theme });
   }
 
   setBodyByTheme() {
@@ -26,6 +35,7 @@ class App extends Component {
     const { theme } = this.state;
     return (
       <ThemeContext.Provider value={getThemeFromId(theme)}>
+        <ThemeSelector onChange={this.onChange} />
         <GIFted />
       </ThemeContext.Provider>
     );

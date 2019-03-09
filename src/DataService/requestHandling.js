@@ -1,4 +1,5 @@
 import * as LocalStore from './serviceHelper';
+import { getObjectUrlFromUrl } from '../utils';
 
 export async function fetchBookmarksLocally() {
   const response = await LocalStore.readBookmark();
@@ -16,17 +17,24 @@ export async function fetchBookmarksRemotely() {
   return [];
 }
 
-export async function saveBookmark(data) {
-  const response = await LocalStore.writeBookmark(data);
-  return response || [];
+export async function saveBookmark(bookmarkId, data, url) {
+  await LocalStore.writeBookmark(data);
+  const objectUrl = await getObjectUrlFromUrl(url);
+  const storedObjectUrl = await LocalStore.storeMedia(bookmarkId, objectUrl);
+  return storedObjectUrl;
 }
 
 export async function removeBookmark(bookmarkId) {
   const response = await LocalStore.deleteBookmark(bookmarkId);
-  return response || [];
+  return response;
 }
 
-export async function hasAlreadyBookmarked(bookmarkId) {
+export async function isAlreadyBookmarked(bookmarkId) {
   const response = await LocalStore.readBookmark(bookmarkId);
-  return response || [];
+  return response;
+}
+
+export async function getAllBookmarkedGifs() {
+  const response = await LocalStore.readBookmarkMedias();
+  return response;
 }

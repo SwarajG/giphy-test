@@ -1,7 +1,7 @@
 import { css } from 'emotion';
 
-const inputClass = css`
-  background-color: #fff;
+const inputClass = theme => css`
+  background-color: ${theme.inputBackground};
   border-radius: 0;
   font-weight: 400;
   width: 100%;
@@ -29,7 +29,6 @@ const controllerWrapper = css`
   color: #FFF;
   margin-bottom: 20px;
   justify-content: flex-end;
-  width: 50px;
   background: #212121;
   position: absolute;
   top: 0;
@@ -63,7 +62,23 @@ const topColor = isPlaying => css`
     right: 24px;
     background-color: rgb(0, 255, 153);
   `}
-  transition: color .2s ease-in-out .2s;
+  transition: all .2s ease-in-out .2s;
+`;
+
+const topColorForTabs = tab => css`
+  display: inline-block;
+  min-height: 24px;
+  min-width: 100px;
+  position: absolute;
+  ${!tab && `
+    right: 0;
+    background-color: rgb(255, 102, 102);
+  `}
+  ${tab && `
+    right: 100px;
+    background-color: rgb(0, 255, 153);
+  `}
+  transition: all .2s ease-in-out .2s;
 `;
 
 const wrapper = css`
@@ -84,8 +99,8 @@ const gridWrapper = css`
   margin-top: 70px;
 `;
 
-const heartIcon = css`
-  display: none;
+const heartIcon = isBookmarked => css`
+  ${isBookmarked ? 'display: block;' : 'display: none;'};
   position: absolute;
   right: 7px;
   top: 7px;
@@ -100,6 +115,21 @@ const noResults = url => css`
   margin-top: 70px;
 `;
 
+const tabsWrapper = css`
+  left: 0;
+  width: 200px;
+`;
+
+const tabs = css`
+  font-family: helvetica;
+  width: 100px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  z-index: 2;
+  line-height: 14px;
+  font-size: 14px;
+`;
+
 export default {
   inputClass,
   videoBackground,
@@ -111,5 +141,8 @@ export default {
   wrapper,
   gridWrapper,
   heartIcon,
-  noResults
+  noResults,
+  tabs,
+  tabsWrapper,
+  topColorForTabs
 };

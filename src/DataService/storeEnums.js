@@ -1,3 +1,4 @@
+const MEDIA = 'media';
 const BOOKMARKS = 'boomarks';
 
-export { BOOKMARKS };
+export { BOOKMARKS, MEDIA };

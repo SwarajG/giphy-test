@@ -5,9 +5,14 @@ const themes = {
   DARK: 'DARK',
   LIGHT: 'LIGHT'
 };
+const tabs = {
+  GIFS: 'GIFS',
+  FAVOURITE: 'FAVOURITE'
+};
 
 export {
   defaultOffset,
   defaultLimit,
-  themes
+  themes,
+  tabs
 };

@@ -4,7 +4,7 @@ import Icon from '../../HelperComponent/icons';
 import {
   saveBookmark,
   removeBookmark,
-  hasAlreadyBookmarked
+  isAlreadyBookmarked
 } from '../../DataService/requestHandling';
 import s from './styles';
 
@@ -36,13 +36,12 @@ export default class GifCard extends Component {
     this.state = {
       isBookmarked: false
     };
-    this.onIconClick = this.onIconClick.bind(this);
   }
 
   async componentDidMount() {
-    const isBooked = await this.isAlreadyBookmarked(this.props.gif.id);
-    if (isBooked) {
-      this.setState({ isBookmarked: isBooked });
+    const bookedCard = await isAlreadyBookmarked(this.props.gif.id);
+    if (bookedCard) {
+      this.setState({ isBookmarked: true });
     }
   }
 
@@ -50,20 +49,15 @@ export default class GifCard extends Component {
     return document.getElementById(this.props.gif.id); 
   }
 
-  async isAlreadyBookmarked(id) {
-    const isAlreadyBookedElement = await hasAlreadyBookmarked(id);
-    console.log(isAlreadyBookedElement);
-    return isAlreadyBookedElement.length === 1;
-  }
-
-  onIconClick(id, gif) {
-    return async function () {
-      if (this.isAlreadyBookmarked(id)) {
-        removeBookmark(id);
-      } else {
-        const bookmarkedObject = gif;
-        saveBookmark(bookmarkedObject);
-      }
+  onIconClick = (id, gif) => async () => {
+    const response = await isAlreadyBookmarked(id);
+    if (response) {
+      removeBookmark(id);
+      this.setState({ isBookmarked: false });
+    } else {
+      const bookmarkedObject = gif;
+      saveBookmark(id, bookmarkedObject, gif.images.fixed_width.mp4);
+      this.setState({ isBookmarked: true });
     }
   }
 
@@ -74,8 +68,8 @@ export default class GifCard extends Component {
     const randomColor = this.context.randomColors[index % 5];
     return (
       <div className={s.videoBackground(randomColor, images.fixed_width.height)}>
-        <div className={`${s.heartIcon} heart`} onClick={this.onIconClick(id, this.props.gif)}>
-          <Icon type={isBookmarked ? 'heart-filled' : 'heart'} width={20} height={20} fill="#FFF" />
+        <div className={`${s.heartIcon(isBookmarked)} heart`} onClick={this.onIconClick(id, this.props.gif)}>
+          <Icon type="heart-fill" width={20} height={20} fill={isBookmarked ? '#FF6666' : '#FFF'} />
         </div>
         <video id={id} autoPlay={true} loop muted={true} preload="auto" className="gif-video">
           <source src={images.fixed_width.mp4} type="video/mp4" />

@@ -5,7 +5,7 @@ import { defaultLimit, defaultOffset } from '../../utils/const';
 import GifCard from '../views/GifCard';
 import Icon from '../../HelperComponent/icons';
 import s from './styles';
-// import noResultFoundImage from '../../assets/not-results-found.gif';
+import noResultFoundImage from '../../assets/not-results-found.gif';
 import './styles.css';
 
 const Item = ({ gif, index, isPlaying }) => (
@@ -24,16 +24,10 @@ export default class GridLayout extends Component {
       limit: defaultLimit,
       offset: defaultOffset,
       query: props.query,
-      hasMore: true
+      hasMore: true,
+      isFinished: false
     }
   }
-
-  // shouldComponentUpdate(nextProps, nextState) {
-  //   if (nextProps.query !== this.props.query || nextState.gifsElements.length !== this.state.gifsElements.length) {
-  //     return true;
-  //   }
-  //   return false;
-  // }
 
   loadItems = async () => {
     const items = [];
@@ -51,6 +45,12 @@ export default class GridLayout extends Component {
           />
         );
       }
+      const isFinished = response.pagination.count >= response.pagination.total_count;
+      const hasNoData = response.data.length === 0;
+      if (isFinished && hasNoData) {
+        this.setState({ hasMore: false });
+        return [];
+      }
       return items;
     } catch (error) {
       alert('Something went wrong with the giphy api. Please try again later...');
@@ -65,6 +65,8 @@ export default class GridLayout extends Component {
     const items = await this.loadItems();
     if (items.length > 0) {
       this.setState({ gifsElements: gifsElements.concat(items), offset: offset + 1 + limit });
+    } else {
+      this.setState({ isFinished: true });
     }
   };
 
@@ -87,12 +89,12 @@ export default class GridLayout extends Component {
   }
 
   render() {
-    const { gifsElements, query } = this.state;
-    // if (gifsElements.length === 0 && query !== '') {
-    //   return (
-    //     <div className={s.noResults(noResultFoundImage)} />
-    //   );
-    // }
+    const { gifsElements, hasMore, isFinished } = this.state;
+    if (!hasMore) {
+      return (
+        <div className={s.noResults(noResultFoundImage)} />
+      );
+    }
     return (
       <div className={s.gridWrapper}>
         <Grid
@@ -102,7 +104,7 @@ export default class GridLayout extends Component {
           onLayoutComplete={this.onLayoutComplete}
           transitionDuration={0.2}
           isConstantSize={true}
-          loading={this.renderLoader()}
+          loading={isFinished ? null: this.renderLoader()}
         >
           {gifsElements}
         </Grid>

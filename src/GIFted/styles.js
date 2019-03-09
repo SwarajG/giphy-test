@@ -2,6 +2,8 @@ import { css } from 'emotion';
 
 const mainWrapper = css`
   max-width: 900px;
+  padding-left: 10px;
+  padding-right: 10px;
   margin: 50px auto;
   position: relative;
 `;
@@ -25,8 +27,14 @@ const searchIcon = css`
   justify-content: center;
 `;
 
+const navWrapper = css`
+  display: flex;
+  justify-content: space-between;
+`;
+
 export default {
   mainWrapper,
   inputWrapper,
-  searchIcon
+  searchIcon,
+  navWrapper,
 };

@@ -13,3 +13,10 @@ export function debounce(func, wait, immediate) {
 		if (callNow) func.apply(context, args);
 	};
 };
+
+export async function getObjectUrlFromUrl(url) {
+	const response = await fetch(url);
+	const blob = await response.blob();
+	// const objectUrl = URL.createObjectURL(blob);
+	return blob;
+}

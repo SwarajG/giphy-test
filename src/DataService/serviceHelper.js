@@ -1,14 +1,26 @@
 import * as StoreNames from './storeEnums';
 import * as StoreHandler from './dbHelper';
 
-export function readBookmark(bookmarkId) {
+export async function readBookmark(bookmarkId) {
   return StoreHandler.readData(StoreNames.BOOKMARKS, bookmarkId);
 }
 
-export function writeBookmark(data) {
+export async function writeBookmark(data) {
   return StoreHandler.writeData(StoreNames.BOOKMARKS, data);
 }
 
-export function deleteBookmark(bookmarkId) {
+export async function deleteBookmark(bookmarkId) {
   return StoreHandler.deleteItemFromData(StoreNames.BOOKMARKS, bookmarkId);
+}
+
+export async function storeMedia(bookmarkId, objectUrl) {
+  const mediaObject = {
+    id: bookmarkId,
+    objectUrl
+  };
+  return StoreHandler.writeData(StoreNames.MEDIA, mediaObject);
+}
+
+export async function readBookmarkMedias() {
+  return StoreHandler.readAllData(StoreNames.MEDIA);
 }
