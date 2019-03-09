@@ -38,3 +38,13 @@ export async function getAllBookmarkedGifs() {
   const response = await LocalStore.readBookmarkMedias();
   return response;
 }
+
+export async function getMediaById(mediaId) {
+  const response = await LocalStore.readMedia(mediaId);
+  return response;
+}
+
+export async function readAllBookmarks() {
+  const response = await LocalStore.readAllBookmarks();
+  return response;
+}

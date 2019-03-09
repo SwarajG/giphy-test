@@ -100,7 +100,7 @@ const gridWrapper = css`
 `;
 
 const heartIcon = isBookmarked => css`
-  ${isBookmarked ? 'display: block;' : 'display: none;'};
+  display: block;
   position: absolute;
   right: 7px;
   top: 7px;

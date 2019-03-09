@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { ThemeContext } from '../../utils/themeUtil';
 import Icon from '../../HelperComponent/icons';
+import { tabs } from '../../utils/const';
 import {
   saveBookmark,
   removeBookmark,
-  isAlreadyBookmarked
+  isAlreadyBookmarked,
+  getMediaById
 } from '../../DataService/requestHandling';
 import s from './styles';
 
@@ -34,14 +36,25 @@ export default class GifCard extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isBookmarked: false
+      isBookmarked: false,
+      videoUrl: props.gif.images.fixed_width.mp4
     };
   }
 
   async componentDidMount() {
     const bookedCard = await isAlreadyBookmarked(this.props.gif.id);
+    const { id } = this.props.gif;
+    const { tab } = this.props;
+    const isBookmarkedTab = tab === tabs.FAVOURITE;
     if (bookedCard) {
       this.setState({ isBookmarked: true });
+    }
+    if (isBookmarkedTab) {
+      const response = await getMediaById(id);
+      if (response) {
+        const url = URL.createObjectURL(response.objectUrl);
+        this.setState({ videoUrl: url });
+      }
     }
   }
 
@@ -63,16 +76,19 @@ export default class GifCard extends Component {
 
   render() {
     const { images, id } = this.props.gif;
-    const { index } = this.props;
-    const { isBookmarked } = this.state;
+    const { index, tab } = this.props;
+    const { isBookmarked, videoUrl } = this.state;
     const randomColor = this.context.randomColors[index % 5];
+    const isBookmarkedTab = tab === tabs.FAVOURITE;
     return (
       <div className={s.videoBackground(randomColor, images.fixed_width.height)}>
-        <div className={`${s.heartIcon(isBookmarked)} heart`} onClick={this.onIconClick(id, this.props.gif)}>
-          <Icon type="heart-fill" width={20} height={20} fill={isBookmarked ? '#FF6666' : '#FFF'} />
-        </div>
+        {!isBookmarkedTab && (
+          <div className={`${s.heartIcon(isBookmarked)} heart`} onClick={this.onIconClick(id, this.props.gif)}>
+            <Icon type="heart-fill" width={20} height={20} fill={isBookmarked ? '#FF6666' : '#FFF'} />
+          </div>
+        )}
         <video id={id} autoPlay={true} loop muted={true} preload="auto" className="gif-video">
-          <source src={images.fixed_width.mp4} type="video/mp4" />
+          <source src={videoUrl} />
         </video>
       </div>
     );

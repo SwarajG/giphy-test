@@ -1,20 +1,11 @@
 import React, { Component } from "react";
 import { GridLayout as Grid } from "@egjs/react-infinitegrid";
-import { searchWithQuery } from '../../utils/requestUtils';
 import { defaultLimit, defaultOffset } from '../../utils/const';
-import GifCard from '../views/GifCard';
 import Icon from '../../HelperComponent/icons';
 import s from './styles';
+import fetchDataForTabs from './DataLoader';
 import noResultFoundImage from '../../assets/not-results-found.gif';
 import './styles.css';
-
-const Item = ({ gif, index, isPlaying }) => (
-  <div className="item">
-    <div className="thumbnail">
-      <GifCard gif={gif} index={index} isPlaying={isPlaying} />
-    </div>
-  </div>
-);
 
 export default class GridLayout extends Component {
   constructor(props) {
@@ -30,43 +21,36 @@ export default class GridLayout extends Component {
   }
 
   loadItems = async () => {
-    const items = [];
+    const { tab, isPlaying } = this.props;
     const { offset, limit, query } = this.state;
     try {
-      const response = await searchWithQuery(query, offset, limit);
-      for (let i = 0; i < response.data.length; i++) {
-        const currentElement = response.data[i];
-        items.push(
-          <Item
-            gif={currentElement}
-            index={i}
-            key={`${currentElement.id}_${i}`}
-            isPlaying={this.props.isPlaying}
-          />
-        );
-      }
+      const response = await fetchDataForTabs(tab, query, offset, limit, isPlaying);
       const isFinished = response.pagination.count >= response.pagination.total_count;
       const hasNoData = response.data.length === 0;
       if (isFinished && hasNoData) {
         this.setState({ hasMore: false });
         return [];
+      } else if (isFinished) {
+        this.setState({ isFinished: true });
       }
-      return items;
+      return response.items;
     } catch (error) {
       alert('Something went wrong with the giphy api. Please try again later...');
-      return items;
+      return [];
     }
   }
 
   onAppend = async (e) => {
     e.startLoading();
-    const { offset, limit } = this.state;
-    const gifsElements = this.state.gifsElements;
-    const items = await this.loadItems();
-    if (items.length > 0) {
-      this.setState({ gifsElements: gifsElements.concat(items), offset: offset + 1 + limit });
-    } else {
-      this.setState({ isFinished: true });
+    const { offset, limit, isFinished } = this.state;
+    if (!isFinished) {
+      const gifsElements = this.state.gifsElements;
+      const items = await this.loadItems();
+      if (items.length > 0) {
+        this.setState({ gifsElements: gifsElements.concat(items), offset: offset + 1 + limit });
+      } else {
+        this.setState({ isFinished: true });
+      }
     }
   };
 

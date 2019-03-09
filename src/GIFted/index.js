@@ -63,7 +63,12 @@ export default class GIFted extends Component {
           <Tabs onTabChange={this.onTabChange} tab={tab} />
           <GifController onStatusChange={this.onStatusChange} isPlaying={isPlaying} />
         </div>
-        <GridLayout query={searchQuery} key={searchQuery} isPlaying={isPlaying} />
+        <GridLayout
+          query={searchQuery}
+          key={`${searchQuery}_${tab}`}
+          isPlaying={isPlaying}
+          tab={tab}
+        />
       </div>
     );
   }

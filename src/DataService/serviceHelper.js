@@ -13,6 +13,10 @@ export async function deleteBookmark(bookmarkId) {
   return StoreHandler.deleteItemFromData(StoreNames.BOOKMARKS, bookmarkId);
 }
 
+export async function readAllBookmarks() {
+  return StoreHandler.readAllData(StoreNames.BOOKMARKS);
+}
+
 export async function storeMedia(bookmarkId, objectUrl) {
   const mediaObject = {
     id: bookmarkId,
@@ -23,4 +27,8 @@ export async function storeMedia(bookmarkId, objectUrl) {
 
 export async function readBookmarkMedias() {
   return StoreHandler.readAllData(StoreNames.MEDIA);
+}
+
+export async function readMedia(mediaId) {
+  return StoreHandler.readData(StoreNames.MEDIA, mediaId);
 }
