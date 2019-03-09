@@ -4,8 +4,10 @@ import { defaultLimit, defaultOffset } from '../../utils/const';
 import Icon from '../../HelperComponent/icons';
 import s from './styles';
 import fetchDataForTabs from './DataLoader';
-import noResultFoundImage from '../../assets/not-results-found.gif';
 import './styles.css';
+
+// const noResultFoundImage = '/not-results-found.gif';
+const noResultFoundImage = '/offline_static.gif';
 
 export default class GridLayout extends Component {
   constructor(props) {

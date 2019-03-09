@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import SearchInput from './views/SearchInput';
 import GridLayout from './views/GridLayout';
 import GifController from './views/GifController';
+import OfflineModeView from './views/OfflineModeView';
 import Icon from '../HelperComponent/icons';
 import Tabs from './views/Tabs';
 import { tabs } from '../utils/const';
@@ -48,6 +49,8 @@ export default class GIFted extends Component {
 
   render() {
     const { searchQuery, isPlaying, tab } = this.state;
+    const isOnline = window.navigator.onLine;
+    const isBookmarked = tab === tabs.FAVOURITE;
     return (
       <div className={s.mainWrapper}>
         <div className={s.inputWrapper}>
@@ -63,12 +66,21 @@ export default class GIFted extends Component {
           <Tabs onTabChange={this.onTabChange} tab={tab} />
           <GifController onStatusChange={this.onStatusChange} isPlaying={isPlaying} />
         </div>
-        <GridLayout
-          query={searchQuery}
-          key={`${searchQuery}_${tab}`}
-          isPlaying={isPlaying}
-          tab={tab}
-        />
+        {
+          (isOnline || isBookmarked) && (
+            <GridLayout
+              query={searchQuery}
+              key={`${searchQuery}_${tab}`}
+              isPlaying={isPlaying}
+              tab={tab}
+            />
+          )
+        }
+        {
+          !isOnline && !isBookmarked && (
+            <OfflineModeView />
+          )
+        }
       </div>
     );
   }

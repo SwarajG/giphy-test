@@ -115,13 +115,22 @@ const noResults = url => css`
   margin-top: 70px;
 `;
 
+const offlineMode = theme => css`
+  color: ${theme.primaryContrast};
+  font-size: 24px;
+  text-align: center;
+`;
+
+const offlineWrapper = css`
+  padding-top: 80px;
+`;
+
 const tabsWrapper = css`
   left: 0;
   width: 200px;
 `;
 
 const tabs = css`
-  font-family: helvetica;
   width: 100px;
   padding-top: 5px;
   padding-bottom: 5px;
@@ -144,5 +153,7 @@ export default {
   noResults,
   tabs,
   tabsWrapper,
-  topColorForTabs
+  topColorForTabs,
+  offlineMode,
+  offlineWrapper
 };
