@@ -4,10 +4,8 @@ import { defaultLimit, defaultOffset } from '../../utils/const';
 import Icon from '../../HelperComponent/icons';
 import s from './styles';
 import fetchDataForTabs from './DataLoader';
-import './styles.css';
 
-// const noResultFoundImage = '/not-results-found.gif';
-const noResultFoundImage = '/offline_static.gif';
+const noResultFoundImage = '/not-results-found.gif';
 
 export default class GridLayout extends Component {
   constructor(props) {
@@ -58,12 +56,6 @@ export default class GridLayout extends Component {
 
   onLayoutComplete = (e) => {
     !e.isLayout && e.endLoading();
-    if (!this.props.isPlaying) {
-      const videos = document.getElementsByClassName('gif-video');
-      for(var i = 0; i < videos.length; i++) {
-        videos[i].pause();
-      }
-    }
   }
 
   renderLoader() {

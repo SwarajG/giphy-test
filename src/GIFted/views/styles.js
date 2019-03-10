@@ -13,15 +13,11 @@ const inputClass = theme => css`
   padding: 0 17px;
 `;
 
-const videoBackground = (color, height) => css`
+const imageBackground = (color, height) => css`
   background-color: ${color};
   height: ${height}px;
   width: 200px;
   position: relative;
-
-  &:hover .heart {
-    display: block;
-  }
 `;
 
 const controllerWrapper = css`
@@ -99,7 +95,7 @@ const gridWrapper = css`
   margin-top: 70px;
 `;
 
-const heartIcon = isBookmarked => css`
+const heartIcon = css`
   display: block;
   position: absolute;
   right: 7px;
@@ -139,9 +135,14 @@ const tabs = css`
   font-size: 14px;
 `;
 
+const imageClass = (height, url) => css`
+  min-height: ${height}px;
+  min-width: 200px;
+`;
+
 export default {
   inputClass,
-  videoBackground,
+  imageBackground,
   controllerWrapper,
   controlIconWrapper,
   topColor,
@@ -155,5 +156,6 @@ export default {
   tabsWrapper,
   topColorForTabs,
   offlineMode,
-  offlineWrapper
+  offlineWrapper,
+  imageClass
 };

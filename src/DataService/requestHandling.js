@@ -9,11 +9,7 @@ export async function fetchBookmarksLocally() {
 }
 
 export async function fetchBookmarksRemotely() {
-  // const serverResponse = await getLayers();
-  // const jsonResponse = await serverResponse.json();
-  // const dbData = {};
-  // StoreHandler.writeData(StoreNames.BOOKMARKS, dbData);
-  // return jsonResponse[0];
+  // TODO: Fetch bookamrks remotly
   return [];
 }
 

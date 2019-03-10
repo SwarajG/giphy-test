@@ -4,17 +4,15 @@ import s from './styles';
 
 export default function Tabs(props) {
   function onchange(value) {
-    return function () {
-      props.onTabChange(value);
-    }
+    props.onTabChange(value);
   }
   return (
     <div className={s.wrapper}>
       <div className={`${s.controllerWrapper} ${s.tabsWrapper}`}>
-        <p onClick={onchange(tabs.GIFS)} className={`${s.controlIconWrapper} ${s.tabs}`}>
+        <p onClick={() => onchange(tabs.GIFS)} className={`${s.controlIconWrapper} ${s.tabs}`}>
           GIFS
         </p>
-        <p onClick={onchange(tabs.FAVOURITE)} className={`${s.controlIconWrapper} ${s.tabs}`}>
+        <p onClick={() => onchange(tabs.FAVOURITE)} className={`${s.controlIconWrapper} ${s.tabs}`}>
           Favourites
         </p>
         <span className={`${s.topColorForTabs(tabs.GIFS === props.tab)}`}></span>

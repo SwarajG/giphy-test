@@ -1,14 +1,10 @@
 import { css } from 'emotion';
 
 const themeSelector = css`
-  position: sticky;
-  top: 40px;
-  display: flex;
-  justify-content: flex-end;
-  max-width: 900px;
-  padding-left: 10px;
-  padding-right: 10px;
-  margin: 0 auto;
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  z-index: 100;
 `;
 
 export default {

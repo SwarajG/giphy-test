@@ -10,26 +10,6 @@ import {
 } from '../../DataService/requestHandling';
 import s from './styles';
 
-// TODO: This is for manual control
-// function playVideo() {
-//   const element = getCurrentVideoTag();
-//   element.play();
-// }
-
-// function pauseVideo() {
-//   const element = getCurrentVideoTag();
-//   element.pause();
-// }
-
-// function toggleVideoStatus() {
-//   if (isPlayingStatus) {
-//     pauseVideo();
-//     setIsPlayingStatus(false);
-//   } else {
-//     playVideo();
-//     setIsPlayingStatus(true);
-//   }
-// }
 
 export default class GifCard extends Component {
 
@@ -37,14 +17,18 @@ export default class GifCard extends Component {
     super(props);
     this.state = {
       isBookmarked: false,
-      videoUrl: props.gif.images.fixed_width.mp4
+      imageUrl: null
     };
+    this.updateImageUrl = this.updateImageUrl.bind(this);
   }
 
   async componentDidMount() {
+    const image = new Image();
+    const imageId = `${this.props.gif.id}_${this.props.tab}`;
+    const card = document.getElementById(imageId);
     const bookedCard = await isAlreadyBookmarked(this.props.gif.id);
-    const { id } = this.props.gif;
-    const { tab } = this.props;
+    const { id, images } = this.props.gif;
+    const { tab, isPlaying } = this.props;
     const isBookmarkedTab = tab === tabs.FAVOURITE;
     if (bookedCard) {
       this.setState({ isBookmarked: true });
@@ -53,13 +37,25 @@ export default class GifCard extends Component {
       const response = await getMediaById(id);
       if (response) {
         const url = URL.createObjectURL(response.objectUrl);
-        this.setState({ videoUrl: url });
+        image.onload = () => {
+          card.src = image.src;
+          this.setState({ imageUrl: url });
+        };
+        image.src = url;
       }
+    } else {
+      const url = isPlaying && window.isPlaying ? images.fixed_width.webp : images.fixed_width_still.url;
+      image.onload = () => {
+        card.src = image.src;
+        // To Check if before load window.isPlaying hasn't changed
+        this.setState({ imageUrl: isPlaying && window.isPlaying ? images.fixed_width.webp : images.fixed_width_still.url });
+      };
+      image.src = url;
     }
   }
 
-  getCurrentVideoTag() {
-    return document.getElementById(this.props.gif.id); 
+  updateImageUrl(value) {
+    this.setState({ imageUrl: value });
   }
 
   onIconClick = (id, gif) => async () => {
@@ -69,7 +65,7 @@ export default class GifCard extends Component {
       this.setState({ isBookmarked: false });
     } else {
       const bookmarkedObject = gif;
-      saveBookmark(id, bookmarkedObject, gif.images.fixed_width.mp4);
+      saveBookmark(id, bookmarkedObject, gif.images.fixed_width.webp);
       this.setState({ isBookmarked: true });
     }
   }
@@ -77,19 +73,27 @@ export default class GifCard extends Component {
   render() {
     const { images, id } = this.props.gif;
     const { index, tab } = this.props;
-    const { isBookmarked, videoUrl } = this.state;
+    const { isBookmarked, imageUrl } = this.state;
     const randomColor = this.context.randomColors[index % 5];
     const isBookmarkedTab = tab === tabs.FAVOURITE;
     return (
-      <div className={s.videoBackground(randomColor, images.fixed_width.height)}>
+      <div className={s.imageBackground(randomColor, images.fixed_width.height)}>
         {!isBookmarkedTab && (
-          <div className={`${s.heartIcon(isBookmarked)} heart`} onClick={this.onIconClick(id, this.props.gif)}>
+          <div className={`${s.heartIcon} heart`} onClick={this.onIconClick(id, this.props.gif)}>
             <Icon type="heart-fill" width={20} height={20} fill={isBookmarked ? '#FF6666' : '#FFF'} />
           </div>
         )}
-        <video id={id} autoPlay={true} loop muted={true} preload="auto" className="gif-video">
-          <source src={videoUrl} />
-        </video>
+        <div className={s.imageClass(images.fixed_width.height)}>
+          <img
+            src={imageUrl}
+            alt="giphy"
+            style={{ display: imageUrl ? 'block' : 'none' }}
+            id={`${id}_${tab}`}
+            className="gif-image"
+            data-stillimage={images.fixed_width_still.url}
+            data-gifimage={images.fixed_width.webp}
+          />
+        </div>
       </div>
     );
   }

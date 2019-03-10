@@ -4,17 +4,26 @@ import s from './styles';
 
 export default function GifController(props) {
   function playAllGifs() {
-    const videos = document.getElementsByClassName('gif-video');
-    for(var i = 0; i < videos.length; i++) {
-      videos[i].play();
+    const images = document.getElementsByClassName('gif-image');
+    for(let i = 0; i < images.length; i++) {
+      window.isPlaying = true;
+      const image = new Image();
+      image.src = images[i].getAttribute('data-gifimage');
+      images[i].src = image.src;
+      images[i].style = 'display: block;';
     }
     props.onStatusChange(true);
   }
 
   function pauseAllGifs() {
-    const videos = document.getElementsByClassName('gif-video');
-    for(var i = 0; i < videos.length; i++) {
-      videos[i].pause();
+    const images = document.getElementsByClassName('gif-image');
+    for(let i = 0; i < images.length; i++) {
+      window.isPlaying = false;
+      const image = new Image();
+      image.src = images[i].getAttribute('data-stillimage');
+      images[i].src = image.src;
+      images[i].style = 'display: block;';
+      // console.log(`src: ${images[i].src}, output: ${images[i].getAttribute('data-stillimage')}`);
     }
     props.onStatusChange(false);
   }

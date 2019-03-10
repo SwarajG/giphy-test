@@ -13,6 +13,7 @@ class App extends Component {
   }
 
   async componentDidMount() {
+    window.isPlaying = true;
     this.setBodyByTheme();
   }
 
