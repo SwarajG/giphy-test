@@ -24,7 +24,14 @@ export default class SearchInput extends Component {
   render() {
     const theme = this.context;
     return (
-      <input className={s.inputClass(theme)} onKeyDown={this.onKeyDown} onChange={this.onChange} type="text" placeholder="Search gif here..." />
+      <input
+        className={s.inputClass(theme)}
+        onKeyDown={this.onKeyDown}
+        onChange={this.onChange}
+        type="text"
+        placeholder="Search gif here..."
+        spellcheck="false"
+      />
     );
   }
 }

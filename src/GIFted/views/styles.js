@@ -11,6 +11,7 @@ const inputClass = theme => css`
   letter-spacing: 1px;
   font-size: 18px;
   padding: 0 17px;
+  outline: none;
 `;
 
 const imageBackground = (color, height) => css`
