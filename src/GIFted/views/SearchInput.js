@@ -30,7 +30,7 @@ export default class SearchInput extends Component {
         onChange={this.onChange}
         type="text"
         placeholder="Search gif here..."
-        spellcheck="false"
+        spellCheck="false"
       />
     );
   }

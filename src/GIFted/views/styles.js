@@ -127,13 +127,16 @@ const tabsWrapper = css`
   width: 200px;
 `;
 
-const tabs = css`
+const tabs = isActive => css`
   width: 100px;
   padding-top: 5px;
   padding-bottom: 5px;
   z-index: 2;
   line-height: 14px;
-  font-size: 14px;
+  font-size: 12px;
+  transition: all .2s ease-in-out .2s;
+  color: ${isActive ? '#000' : '#FFF'};
+  font-weight: 600;
 `;
 
 const imageClass = (height, url) => css`
