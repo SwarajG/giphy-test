@@ -31,10 +31,10 @@ const controllerWrapper = css`
   margin-bottom: 20px;
   justify-content: flex-end;
   background: #212121;
-  position: absolute;
   top: 0;
   right: 0;
   text-align: center;
+  width: 48px;
 `;
 
 const iconClass = css`
@@ -84,6 +84,7 @@ const topColorForTabs = tab => css`
 
 const wrapper = css`
   position: relative;
+  display: flex;
 `;
 
 const loader = css`
@@ -143,9 +144,29 @@ const tabs = isActive => css`
   font-weight: 600;
 `;
 
-const imageClass = (height, url) => css`
+const imageClass = height => css`
   min-height: ${height}px;
   min-width: 200px;
+`;
+
+const sortWrapper = css`
+  display: flex;
+  align-items: center;
+  height: 24px;
+  margin-right: 30px;
+`;
+
+const sortOptions = (isActive, theme) => css`
+  padding-left: 5px;
+  padding-right: 5px;
+  color: ${isActive ? theme.primaryContrast : '#b2b2b2'};
+  font-size: 14px;
+  cursor: pointer;
+  font-weight: ${isActive ? 600 : 300};
+
+  &:hover {
+    color: #FFF;
+  }
 `;
 
 export default {
@@ -165,5 +186,7 @@ export default {
   topColorForTabs,
   offlineMode,
   offlineWrapper,
-  imageClass
+  imageClass,
+  sortOptions,
+  sortWrapper
 };

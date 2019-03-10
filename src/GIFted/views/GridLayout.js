@@ -21,10 +21,10 @@ export default class GridLayout extends Component {
   }
 
   loadItems = async () => {
-    const { tab, isPlaying } = this.props;
+    const { tab, isPlaying, activeSorting } = this.props;
     const { offset, limit, query } = this.state;
     try {
-      const response = await fetchDataForTabs(tab, query, offset, limit, isPlaying);
+      const response = await fetchDataForTabs({ tabKey: tab, query, offset, limit, isPlaying, sort: activeSorting });
       const isFinished = response.pagination.count >= response.pagination.total_count;
       const hasNoData = response.data.length === 0;
       if (isFinished && hasNoData) {

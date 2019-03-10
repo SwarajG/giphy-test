@@ -2,7 +2,7 @@ import React from 'react';
 import { tabs } from '../../utils/const';
 import { readAllBookmarks } from '../../DataService/requestHandling';
 import Item from './GridItem';
-import { searchWithQuery, searchRandom } from '../../utils/requestUtils';
+import { searchWithQuery } from '../../utils/requestUtils';
 
 function createElementForGrid(data, isPlaying, tabKey) {
   const items = [];
@@ -21,10 +21,10 @@ function createElementForGrid(data, isPlaying, tabKey) {
   return items;
 }
 
-export default async function fetchDataForTabs(tabKey, query, offset, limit, isPlaying) {
+export default async function fetchDataForTabs({ tabKey, query, offset, limit, isPlaying, sort }) {
   switch (tabKey) {
     case tabs.GIFS: {      
-      const response = await searchWithQuery(query, offset, limit);
+      const response = await searchWithQuery({ query, offset, limit, sort });
       const items = createElementForGrid(response.data, isPlaying, tabKey);
       return {
         ...response,

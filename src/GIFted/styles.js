@@ -6,6 +6,9 @@ const mainWrapper = css`
   padding-right: 10px;
   margin: 50px auto;
   position: relative;
+  @media (max-width: 600px) {
+    max-width: 500px;
+  }
 `;
 
 const inputWrapper = css`
@@ -30,6 +33,10 @@ const searchIcon = css`
 const navWrapper = css`
   display: flex;
   justify-content: space-between;
+  @media (max-width: 600px) {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
 `;
 
 const surpriseContainer = css`

@@ -5,7 +5,7 @@ import GifController from './views/GifController';
 import OfflineModeView from './views/OfflineModeView';
 import Icon from '../HelperComponent/icons';
 import Tabs from './views/Tabs';
-import { tabs } from '../utils/const';
+import { tabs, sorting } from '../utils/const';
 import s from './styles';
 
 export default class GIFted extends Component {
@@ -15,7 +15,8 @@ export default class GIFted extends Component {
       inputText: '',
       searchQuery: '',
       isPlaying: true,
-      tab: tabs.GIFS
+      tab: tabs.GIFS,
+      activeSorting: sorting.RELEVENT
     };
     // bind will attach the function to the prototype, so instance size will be less for the class
     this.onQueryChange = this.onQueryChange.bind(this);
@@ -23,6 +24,7 @@ export default class GIFted extends Component {
     this.onSearch = this.onSearch.bind(this);
     this.onStatusChange = this.onStatusChange.bind(this);
     this.onTabChange = this.onTabChange.bind(this);
+    this.onSortingChanges = this.onSortingChanges.bind(this);
   }
 
   onQueryChange(text) {
@@ -47,8 +49,12 @@ export default class GIFted extends Component {
     this.setState({ tab: value });
   }
 
+  onSortingChanges(sorting) {
+    this.setState({ activeSorting: sorting });
+  }
+
   render() {
-    const { searchQuery, isPlaying, tab } = this.state;
+    const { searchQuery, isPlaying, tab, activeSorting } = this.state;
     const isOnline = window.navigator.onLine;
     const isBookmarked = tab === tabs.FAVOURITE;
     return (
@@ -64,14 +70,20 @@ export default class GIFted extends Component {
         </div>
         <div className={s.navWrapper}>
           <Tabs onTabChange={this.onTabChange} tab={tab} />
-          <GifController onStatusChange={this.onStatusChange} isPlaying={isPlaying} />
+          <GifController
+            onStatusChange={this.onStatusChange}
+            isPlaying={isPlaying}
+            activeSorting={activeSorting}
+            onSortingChanges={this.onSortingChanges}
+          />
         </div>
         {
           (isOnline || isBookmarked) && (
             <GridLayout
               query={searchQuery}
-              key={`${searchQuery}_${tab}`}
+              key={`${searchQuery}_${tab}_${activeSorting}`}
               isPlaying={isPlaying}
+              activeSorting={activeSorting}
               tab={tab}
             />
           )
