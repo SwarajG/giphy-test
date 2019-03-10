@@ -1,5 +1,8 @@
 import { css } from 'emotion';
 
+// TODO: Some of the styles are getting used across the classes, That why kept in one place.
+// Can refactor it
+
 const inputClass = theme => css`
   background-color: ${theme.inputBackground};
   border-radius: 0;

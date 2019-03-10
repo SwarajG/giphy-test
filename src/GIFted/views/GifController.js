@@ -6,15 +6,20 @@ import s from './styles';
 
 export default function GifController(props) {
   const theme = useContext(ThemeContext);
+
+  function doActionOnImage(images, data, isPlaying) {
+    window.isPlaying = isPlaying;
+    images.style = 'display: none;';
+    const image = new Image();
+    image.src = images.getAttribute(data);
+    images.src = image.src;
+    images.style = 'display: block;';
+  }
+
   function playAllGifs() {
     const images = document.getElementsByClassName('gif-image');
     for(let i = 0; i < images.length; i++) {
-      window.isPlaying = true;
-      images[i].style = 'display: none;';
-      const image = new Image();
-      image.src = images[i].getAttribute('data-gifimage');
-      images[i].src = image.src;
-      images[i].style = 'display: block;';
+      doActionOnImage(images[i], 'data-gifimage', true);
     }
     props.onStatusChange(true);
   }
@@ -22,12 +27,7 @@ export default function GifController(props) {
   function pauseAllGifs() {
     const images = document.getElementsByClassName('gif-image');
     for(let i = 0; i < images.length; i++) {
-      window.isPlaying = false;
-      images[i].style = 'display: none;';
-      const image = new Image();
-      image.src = images[i].getAttribute('data-stillimage');
-      images[i].src = image.src;
-      images[i].style = 'display: block;';
+      doActionOnImage(images[i], 'data-stillimage', false);
     }
     props.onStatusChange(false);
   }
