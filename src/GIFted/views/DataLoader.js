@@ -2,7 +2,7 @@ import React from 'react';
 import { tabs } from '../../utils/const';
 import { readAllBookmarks } from '../../DataService/requestHandling';
 import Item from './GridItem';
-import { searchWithQuery } from '../../utils/requestUtils';
+import { searchWithQuery, searchRandom } from '../../utils/requestUtils';
 
 function createElementForGrid(data, isPlaying, tabKey) {
   const items = [];

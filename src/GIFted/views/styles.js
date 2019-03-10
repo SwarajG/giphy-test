@@ -19,6 +19,10 @@ const imageBackground = (color, height) => css`
   height: ${height}px;
   width: 200px;
   position: relative;
+
+  &:hover .heart {
+    display: block;
+  }
 `;
 
 const controllerWrapper = css`
@@ -96,8 +100,8 @@ const gridWrapper = css`
   margin-top: 70px;
 `;
 
-const heartIcon = css`
-  display: block;
+const heartIcon = isBookmarked => css`
+  display: ${isBookmarked ? 'block' : 'none'};
   position: absolute;
   right: 7px;
   top: 7px;

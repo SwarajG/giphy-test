@@ -7,13 +7,20 @@ export default function Tabs(props) {
     props.onTabChange(value);
   }
   const isGifsTab = tabs.GIFS === props.tab;
+  const isFavTab = tabs.FAVOURITE === props.tab;
   return (
     <div className={s.wrapper}>
       <div className={`${s.controllerWrapper} ${s.tabsWrapper}`}>
-        <p onClick={() => onchange(tabs.GIFS)} className={`${s.controlIconWrapper} ${s.tabs(tabs.GIFS === props.tab)}`}>
+        <p
+          onClick={() => onchange(tabs.GIFS)}
+          className={`${s.controlIconWrapper} ${s.tabs(isGifsTab)}`}
+        >
           GIFs
         </p>
-        <p onClick={() => onchange(tabs.FAVOURITE)} className={`${s.controlIconWrapper} ${s.tabs(tabs.FAVOURITE === props.tab)}`}>
+        <p
+          onClick={() => onchange(tabs.FAVOURITE)}
+          className={`${s.controlIconWrapper} ${s.tabs(isFavTab)}`}
+        >
           Favourites
         </p>
         <span className={`${s.topColorForTabs(isGifsTab)}`}></span>

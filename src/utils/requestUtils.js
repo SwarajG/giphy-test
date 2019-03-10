@@ -16,5 +16,5 @@ function getTrendingGifs(offset, limit) {
 
 export {
   searchWithQuery,
-  getTrendingGifs
+  getTrendingGifs,
 };

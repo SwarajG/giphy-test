@@ -32,9 +32,19 @@ const navWrapper = css`
   justify-content: space-between;
 `;
 
+const surpriseContainer = css`
+  position: absolute;
+  right: 55px;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  cursor: pointer;
+`;
+
 export default {
   mainWrapper,
   inputWrapper,
   searchIcon,
   navWrapper,
+  surpriseContainer
 };

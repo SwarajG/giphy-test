@@ -79,8 +79,8 @@ export default class GifCard extends Component {
     return (
       <div className={s.imageBackground(randomColor, images.fixed_width.height)}>
         {!isBookmarkedTab && (
-          <div className={`${s.heartIcon} heart`} onClick={this.onIconClick(id, this.props.gif)}>
-            <Icon type="heart-fill" width={20} height={20} fill={isBookmarked ? '#FF6666' : '#FFF'} />
+          <div className={`${s.heartIcon(isBookmarked)} heart`} onClick={this.onIconClick(id, this.props.gif)}>
+            <Icon type={isBookmarked ? 'heart-fill' : 'heart'} width={20} height={20} fill={isBookmarked ? '#FF6666' : '#FFF'} />
           </div>
         )}
         <div className={s.imageClass(images.fixed_width.height)}>
