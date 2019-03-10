@@ -10,7 +10,6 @@ import { themes } from '../utils/const';
 import s from './styles';
 
 export default function ThemeSelector(props) {
-  const { theme } = props;
   const themeContext = useContext(ThemeContext);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -48,11 +47,5 @@ export default function ThemeSelector(props) {
         />
       </FloatingMenu>
     </div>
-    // <div className={s.themeSelector}>
-    //   <select onChange={onChange} value={theme}>
-    //     <option value={themes.DARK}>{themes.DARK}</option>
-    //     <option value={themes.LIGHT}>{themes.LIGHT}</option>
-    //   </select>
-    // </div>
   );
 }
