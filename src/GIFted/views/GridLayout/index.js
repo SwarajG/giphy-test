@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { GridLayout as Grid } from "@egjs/react-infinitegrid";
-import { defaultLimit, defaultOffset } from '../../utils/const';
-import Icon from '../../HelperComponent/icons';
+import { defaultLimit, defaultOffset } from '../../../utils/const';
+import Icon from '../../../HelperComponent/icons';
 import s from './styles';
-import fetchDataForTabs from './DataLoader';
+import fetchDataForTabs from '../DataLoader';
 
 const noResultFoundImage = '/not-results-found.gif';
 

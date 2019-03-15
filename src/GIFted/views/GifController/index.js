@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
-import Icon from '../../HelperComponent/icons';
-import { ThemeContext } from '../../utils/themeUtil';
-import { sorting } from '../../utils/const';
+import Icon from '../../../HelperComponent/icons';
+import { ThemeContext } from '../../../utils/themeUtil';
+import { sorting } from '../../../utils/const';
 import s from './styles';
 
 export default function GifController(props) {

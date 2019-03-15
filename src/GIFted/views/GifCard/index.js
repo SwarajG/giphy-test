@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-import { ThemeContext } from '../../utils/themeUtil';
-import Icon from '../../HelperComponent/icons';
-import { tabs } from '../../utils/const';
+import { ThemeContext } from '../../../utils/themeUtil';
+import Icon from '../../../HelperComponent/icons';
+import { tabs } from '../../../utils/const';
 import {
   saveBookmark,
   removeBookmark,
   isAlreadyBookmarked,
   getMediaById
-} from '../../DataService/requestHandling';
+} from '../../../DataService/requestHandling';
 import s from './styles';
 
 

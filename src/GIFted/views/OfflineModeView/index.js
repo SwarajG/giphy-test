@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { ThemeContext } from '../../utils/themeUtil';
+import { ThemeContext } from '../../../utils/themeUtil';
 import s from './styles';
 
 export default function OfflineModeView() {

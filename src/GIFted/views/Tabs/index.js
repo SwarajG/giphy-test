@@ -1,5 +1,5 @@
 import React from 'react';
-import { tabs } from '../../utils/const';
+import { tabs } from '../../../utils/const';
 import s from './styles';
 
 export default function Tabs(props) {
